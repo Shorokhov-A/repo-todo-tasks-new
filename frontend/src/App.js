@@ -2,6 +2,7 @@ import React from "react";
 import logo from './logo.svg';
 import './App.css';
 import UserList from "./components/User.js";
+import MenuList from "./components/Menu.js";
 import axios from "axios";
 
 class App extends React.Component {
@@ -27,7 +28,8 @@ class App extends React.Component {
   render() {
     return (
         <div>
-          <UserList users={this.state.users} />
+            <MenuList />
+            <UserList users={this.state.users} />
         </div>
     )
   }
