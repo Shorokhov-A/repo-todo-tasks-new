@@ -10,6 +10,7 @@ class UserModelSerializer(HyperlinkedModelSerializer):
         many=True,
         read_only=True,
     )
+
     class Meta:
         model = User
         # fields = ('username', 'first_name', 'last_name', 'email')
