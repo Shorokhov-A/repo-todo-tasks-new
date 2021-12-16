@@ -12,6 +12,6 @@ class ProjectModelViewSet(ModelViewSet):
 
 
 class ToDoModelViewSet(ModelViewSet):
-    renderer_classes = (JSONRenderer, BrowsableAPIRenderer)
+    renderer_classes = (CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer)
     queryset = ToDo.objects.all()
     serializer_class = ToDoModelSerializer
