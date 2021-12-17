@@ -11,6 +11,10 @@ class ProjectLimitOffsetPagination(LimitOffsetPagination):
     default_limit = 10
 
 
+class ToDoLimitOffsetPagination(LimitOffsetPagination):
+    default_limit = 20
+
+
 class ProjectModelViewSet(ModelViewSet):
     renderer_classes = (CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer)
     queryset = Project.objects.all()
@@ -23,3 +27,9 @@ class ToDoModelViewSet(ModelViewSet):
     renderer_classes = (CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer)
     queryset = ToDo.objects.all()
     serializer_class = ToDoModelSerializer
+    pagination_class = ToDoLimitOffsetPagination
+    filterset_fields = ('project',)
+
+    def perform_destroy(self, instance):
+        instance.is_active = False
+        instance.save()
