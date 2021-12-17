@@ -3,7 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer
 from rest_framework.pagination import LimitOffsetPagination
 from TODO.models import Project, ToDo
-from TODO.filters import ProjectFilter
+from TODO.filters import ProjectFilter, ToDoFilter
 from TODO.serializers import ProjectModelSerializer, ToDoModelSerializer
 
 
@@ -28,7 +28,7 @@ class ToDoModelViewSet(ModelViewSet):
     queryset = ToDo.objects.all()
     serializer_class = ToDoModelSerializer
     pagination_class = ToDoLimitOffsetPagination
-    filterset_fields = ('project',)
+    filterset_class = ToDoFilter
 
     def perform_destroy(self, instance):
         instance.is_active = False
