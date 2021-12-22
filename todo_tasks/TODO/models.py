@@ -7,6 +7,9 @@ class Project(models.Model):
     link = models.URLField(max_length=256, blank=True, null=True)
     users = models.ManyToManyField(User)
 
+    def __str__(self):
+        return self.name
+
 
 class ToDo(models.Model):
     project = models.ForeignKey(Project, models.PROTECT)
