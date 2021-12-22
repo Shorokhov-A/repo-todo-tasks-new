@@ -54,21 +54,8 @@ class App extends React.Component {
   render() {
     return (
         <div>
-            <MenuList />
             <HashRouter>
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to='/'>Users</Link>
-                        </li>
-                        <li>
-                            <Link to='/projects'>Projects</Link>
-                        </li>
-                        <li>
-                            <Link to='/todo'>TODO</Link>
-                        </li>
-                    </ul>
-                </nav>
+                <MenuList />
                 <Routes>
                     <Route exact path='/' element={<UserList users={this.state.users} />} />
                     <Route exact path='/projects' element={<ProjectList projects={this.state.projects} />} />
