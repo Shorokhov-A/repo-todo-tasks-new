@@ -5,6 +5,7 @@ import UserList from "./components/User.js";
 import MenuList from "./components/Menu.js";
 import Footer from "./components/Footer.js";
 import ProjectList from "./components/Projects.js";
+import ToDoList from "./components/ToDo.js";
 import axios from "axios";
 
 class App extends React.Component {
@@ -13,6 +14,7 @@ class App extends React.Component {
     this.state = {
         'users': [],
         'projects': [],
+        'todo': [],
     }
   }
 
@@ -36,6 +38,16 @@ class App extends React.Component {
               }
               )
         }).catch(error => console.log(error))
+
+    axios.get('http://127.0.0.1:8000/api/todo')
+        .then(response => {
+          const notes = response.data.results
+          this.setState(
+              {
+                'todo': notes
+              }
+              )
+        }).catch(error => console.log(error))
   }
 
   render() {
@@ -44,6 +56,7 @@ class App extends React.Component {
             <MenuList />
             <UserList users={this.state.users} />
             <ProjectList projects={this.state.projects} />
+            <ToDoList notes={this.state.todo} />
             <Footer />
         </div>
     )
