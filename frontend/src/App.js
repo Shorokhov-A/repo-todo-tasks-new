@@ -7,7 +7,7 @@ import Footer from "./components/Footer.js";
 import ProjectList from "./components/Projects.js";
 import ToDoList from "./components/ToDo.js";
 import axios from "axios";
-import {HashRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, Route, Routes, Link} from "react-router-dom";
 
 class App extends React.Component {
   constructor(props) {
@@ -56,6 +56,19 @@ class App extends React.Component {
         <div>
             <MenuList />
             <HashRouter>
+                <nav>
+                    <ul>
+                        <li>
+                            <Link to='/'>Users</Link>
+                        </li>
+                        <li>
+                            <Link to='/projects'>Projects</Link>
+                        </li>
+                        <li>
+                            <Link to='/todo'>TODO</Link>
+                        </li>
+                    </ul>
+                </nav>
                 <Routes>
                     <Route exact path='/' element={<UserList users={this.state.users} />} />
                     <Route exact path='/projects' element={<ProjectList projects={this.state.projects} />} />
