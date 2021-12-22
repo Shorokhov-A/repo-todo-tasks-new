@@ -73,6 +73,7 @@ class App extends React.Component {
                     <Route exact path='/' element={<UserList users={this.state.users} />} />
                     <Route exact path='/projects' element={<ProjectList projects={this.state.projects} />} />
                     <Route exact path='/todo' element={<ToDoList notes={this.state.todo} />} />
+                    <Route path='*' element={<h1>Страница не найдена.</h1>} />
                 </Routes>
             </HashRouter>
             <Footer />
