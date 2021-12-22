@@ -12,7 +12,7 @@ class App extends React.Component {
     super(props);
     this.state = {
         'users': [],
-        // 'projects': [],
+        'projects': [],
     }
   }
 
@@ -27,15 +27,15 @@ class App extends React.Component {
               )
         }).catch(error => console.log(error))
 
-    // axios.get('http://127.0.0.1:8000/api/projects')
-    //     .then(response => {
-    //       const projects = response.data.result
-    //       this.setState(
-    //           {
-    //             'projects': projects
-    //           }
-    //           )
-    //     }).catch(error => console.log(error))
+    axios.get('http://127.0.0.1:8000/api/projects')
+        .then(response => {
+          const projects = response.data.results
+          this.setState(
+              {
+                'projects': projects
+              }
+              )
+        }).catch(error => console.log(error))
   }
 
   render() {
@@ -43,7 +43,7 @@ class App extends React.Component {
         <div>
             <MenuList />
             <UserList users={this.state.users} />
-            {/*<ProjectList projects={this.state.projects} />*/}
+            <ProjectList projects={this.state.projects} />
             <Footer />
         </div>
     )
