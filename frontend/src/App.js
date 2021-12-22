@@ -7,7 +7,7 @@ import Footer from "./components/Footer.js";
 import ProjectList from "./components/Projects.js";
 import ToDoList from "./components/ToDo.js";
 import axios from "axios";
-import {HashRouter, Route, Routes, Link} from "react-router-dom";
+import {HashRouter, Route, Routes} from "react-router-dom";
 
 class App extends React.Component {
   constructor(props) {
@@ -57,9 +57,9 @@ class App extends React.Component {
             <HashRouter>
                 <MenuList />
                 <Routes>
-                    <Route exact path='/' element={<UserList users={this.state.users} />} />
-                    <Route exact path='/projects' element={<ProjectList projects={this.state.projects} />} />
-                    <Route exact path='/todo' element={<ToDoList notes={this.state.todo} />} />
+                    <Route path='/' element={<UserList users={this.state.users} />} />
+                    <Route path='/projects' element={<ProjectList projects={this.state.projects} />} />
+                    <Route path='/todo' element={<ToDoList notes={this.state.todo} />} />
                     <Route path='*' element={<h1>Страница не найдена.</h1>} />
                 </Routes>
             </HashRouter>
