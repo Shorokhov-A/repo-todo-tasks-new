@@ -7,7 +7,16 @@ import Footer from "./components/Footer.js";
 import ProjectList from "./components/Projects.js";
 import ToDoList from "./components/ToDo.js";
 import axios from "axios";
-import {HashRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, Route, Routes, useLocation} from "react-router-dom";
+
+const NotFound404 = () => {
+    let location = useLocation();
+    return (
+        <div>
+            <h1>Страница по адресу '{location.pathname}' не найдена</h1>
+        </div>
+    )
+}
 
 class App extends React.Component {
   constructor(props) {
@@ -60,7 +69,7 @@ class App extends React.Component {
                     <Route path='/' element={<UserList users={this.state.users} />} />
                     <Route path='/projects' element={<ProjectList projects={this.state.projects} />} />
                     <Route path='/todo' element={<ToDoList notes={this.state.todo} />} />
-                    <Route path='*' element={<h1>Страница не найдена.</h1>} />
+                    <Route path='*' element={<NotFound404 />} />
                 </Routes>
             </HashRouter>
             <Footer />
