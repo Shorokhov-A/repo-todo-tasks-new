@@ -8,7 +8,7 @@ import ProjectList from "./components/Projects.js";
 import ToDoList from "./components/ToDo.js";
 import ProjectDetails from "./components/ProjectInfo.js";
 import axios from "axios";
-import {HashRouter, Route, Routes, useLocation} from "react-router-dom";
+import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
 
 const NotFound404 = () => {
     let location = useLocation();
@@ -64,7 +64,7 @@ class App extends React.Component {
   render() {
     return (
         <div>
-            <HashRouter>
+            <BrowserRouter>
                 <MenuList />
                 <Routes>
                     <Route path='/' element={<UserList users={this.state.users} />} />
@@ -73,7 +73,7 @@ class App extends React.Component {
                     <Route path='/project/:id' element={<ProjectDetails items={this.state.projects} />} />
                     <Route path='*' element={<NotFound404 />} />
                 </Routes>
-            </HashRouter>
+            </BrowserRouter>
             <Footer />
         </div>
     )
