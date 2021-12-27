@@ -8,8 +8,9 @@ import ProjectList from "./components/Projects.js";
 import ToDoList from "./components/ToDo.js";
 import ProjectDetails from "./components/ProjectInfo.js";
 import axios from "axios";
-import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
+import {BrowserRouter, Route, Routes, useLocation, Link} from "react-router-dom";
 import LoginForm from "./components/Auth.js";
+import Cookies from 'universal-cookie';
 
 const NotFound404 = () => {
     let location = useLocation();
@@ -27,7 +28,35 @@ class App extends React.Component {
         'users': [],
         'projects': [],
         'todo': [],
+        'token': '',
     }
+  }
+
+  set_token(token) {
+      const cookies = new Cookies()
+      cookies.set('token', token)
+      this.setState({'token': token})
+  }
+
+  is_authenticated() {
+      return this.state.token != ''
+  }
+
+  logout() {
+      this.set_token('')
+  }
+
+  get_token_from_storage() {
+      const cookies = new Cookies()
+      const token = cookies.get('token')
+      this.setState({'token': token})
+  }
+
+  get_token(username, password) {
+      axios.post('http://127.0.0.1:8000/api/jwt-token/', {username: username, password: password})
+          .then(response => {
+              this.set_token(response.data['token'])
+          }).catch(error => alert('Неверный логин или пароль'))
   }
 
   load_data() {
@@ -63,14 +92,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+      this.get_token_from_storage()
       this.load_data()
-  }
-
-  get_token(username, password) {
-      axios.post('http://127.0.0.1:8000/api/jwt-token/', {username: username, password: password})
-          .then(response => {
-              console.log(response.data)
-          }).catch(error => alert('Неверный логин или пароль'))
   }
 
   render() {
@@ -78,6 +101,7 @@ class App extends React.Component {
         <div>
             <BrowserRouter>
                 <MenuList />
+                {this.is_authenticated() ? <button onClick={() => this.logout()}>Logout</button> : <Link to='/login'>Login</Link>}
                 <Routes>
                     <Route path='/' element={<UserList users={this.state.users} />} />
                     <Route path='/projects' element={<ProjectList projects={this.state.projects} />} />
