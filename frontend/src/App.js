@@ -66,6 +66,13 @@ class App extends React.Component {
       this.load_data()
   }
 
+  get_token(username, password) {
+      axios.post('http://127.0.0.1:8000/api/jwt-token/', {username: username, password: password})
+          .then(response => {
+              console.log(response.data)
+          }).catch(error => alert('Неверный логин или пароль'))
+  }
+
   render() {
     return (
         <div>
@@ -76,7 +83,7 @@ class App extends React.Component {
                     <Route path='/projects' element={<ProjectList projects={this.state.projects} />} />
                     <Route path='/todo' element={<ToDoList notes={this.state.todo} />} />
                     <Route path='/project/:id' element={<ProjectDetails items={this.state.projects} />} />
-                    <Route path='/login' element={<LoginForm />} />
+                    <Route path='/login' element={<LoginForm get_token={(username, password) => this.get_token(username, password)} />} />
                     <Route path='*' element={<NotFound404 />} />
                 </Routes>
             </BrowserRouter>
