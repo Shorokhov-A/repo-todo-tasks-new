@@ -29,8 +29,8 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount() {
-    axios.get('http://127.0.0.1:8000/api/users')
+  load_data() {
+      axios.get('http://127.0.0.1:8000/api/users')
         .then(response => {
           const users = response.data.results
           this.setState(
@@ -59,6 +59,10 @@ class App extends React.Component {
               }
               )
         }).catch(error => console.log(error))
+  }
+
+  componentDidMount() {
+      this.load_data()
   }
 
   render() {
