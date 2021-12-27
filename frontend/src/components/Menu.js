@@ -15,6 +15,9 @@ const MenuList = () => {
                     <li>
                         <Link to='/todo'>TODO</Link>
                     </li>
+                    <li>
+                        <Link to='/login'>Login</Link>
+                    </li>
                 </ul>
             </nav>
         </div>

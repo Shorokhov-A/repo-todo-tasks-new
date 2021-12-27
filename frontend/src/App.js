@@ -9,6 +9,7 @@ import ToDoList from "./components/ToDo.js";
 import ProjectDetails from "./components/ProjectInfo.js";
 import axios from "axios";
 import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
+import LoginForm from "./components/Auth.js";
 
 const NotFound404 = () => {
     let location = useLocation();
@@ -75,6 +76,7 @@ class App extends React.Component {
                     <Route path='/projects' element={<ProjectList projects={this.state.projects} />} />
                     <Route path='/todo' element={<ToDoList notes={this.state.todo} />} />
                     <Route path='/project/:id' element={<ProjectDetails items={this.state.projects} />} />
+                    <Route path='/login' element={<LoginForm />} />
                     <Route path='*' element={<NotFound404 />} />
                 </Routes>
             </BrowserRouter>
