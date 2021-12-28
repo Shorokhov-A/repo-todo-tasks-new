@@ -100,8 +100,7 @@ class App extends React.Component {
     return (
         <div>
             <BrowserRouter>
-                <MenuList />
-                {this.is_authenticated() ? <button onClick={() => this.logout()}>Logout</button> : <Link to='/login'>Login</Link>}
+                <MenuList login={this.is_authenticated() ? <button onClick={() => this.logout()}>Logout</button> : <Link to='/login'>Login</Link>} />
                 <Routes>
                     <Route path='/' element={<UserList users={this.state.users} />} />
                     <Route path='/projects' element={<ProjectList projects={this.state.projects} />} />
