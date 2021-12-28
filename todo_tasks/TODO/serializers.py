@@ -3,7 +3,7 @@ from TODO.models import Project, ToDo
 from users.serializers import UserModelSerializer
 
 
-class ProjectModelSerializer(HyperlinkedModelSerializer):
+class ProjectModelSerializer(ModelSerializer):
     users = StringRelatedField(many=True)
 
     class Meta:
