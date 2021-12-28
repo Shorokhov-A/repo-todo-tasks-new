@@ -39,7 +39,7 @@ class App extends React.Component {
   }
 
   is_authenticated() {
-      return this.state.token != ''
+      return !!this.state.token
   }
 
   logout() {
@@ -53,7 +53,7 @@ class App extends React.Component {
   }
 
   get_token(username, password) {
-      axios.post('http://127.0.0.1:8000/api/jwt-token/', {username: username, password: password})
+      axios.post('http://127.0.0.1:8000/api-token-auth/', {username: username, password: password})
           .then(response => {
               this.set_token(response.data['token'])
           }).catch(error => alert('Неверный логин или пароль'))
@@ -72,7 +72,7 @@ class App extends React.Component {
 
   load_data() {
       const headers = this.get_headers()
-      axios.get('http://127.0.0.1:8000/api/users', headers)
+      axios.get('http://127.0.0.1:8000/api/users', {headers})
         .then(response => {
           const users = response.data.results
           this.setState(
@@ -82,7 +82,7 @@ class App extends React.Component {
               )
         }).catch(error => console.log(error))
 
-    axios.get('http://127.0.0.1:8000/api/projects', headers)
+    axios.get('http://127.0.0.1:8000/api/projects', {headers})
         .then(response => {
           const projects = response.data.results
           this.setState(
@@ -95,7 +95,7 @@ class App extends React.Component {
             this.setState({'projects': []})
         })
 
-    axios.get('http://127.0.0.1:8000/api/todo', headers)
+    axios.get('http://127.0.0.1:8000/api/todo', {headers})
         .then(response => {
           const notes = response.data.results
           this.setState(
