@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-const MenuList = ({login}) => {
+const MenuList = ({login, username}) => {
     return (
         <div>
             <nav>
@@ -20,6 +20,7 @@ const MenuList = ({login}) => {
                     </li>
                 </ul>
             </nav>
+            {username}
         </div>
     )
 }

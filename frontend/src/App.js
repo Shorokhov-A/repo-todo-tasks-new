@@ -29,13 +29,15 @@ class App extends React.Component {
         'projects': [],
         'todo': [],
         'token': '',
+        'user': '',
     }
   }
 
-  set_token(token) {
+  set_token(token,user) {
       const cookies = new Cookies()
       cookies.set('token', token)
-      this.setState({'token': token}, () => this.load_data())
+      cookies.set('user', user)
+      this.setState({'token': token, 'user': user}, () => this.load_data())
   }
 
   is_authenticated() {
@@ -43,19 +45,20 @@ class App extends React.Component {
   }
 
   logout() {
-      this.set_token('')
+      this.set_token('', '')
   }
 
   get_token_from_storage() {
       const cookies = new Cookies()
       const token = cookies.get('token')
-      this.setState({'token': token}, () => this.load_data())
+      const user = cookies.get('user')
+      this.setState({'token': token, 'user': user}, () => this.load_data())
   }
 
   get_token(username, password) {
       axios.post('http://127.0.0.1:8000/api-token-auth/', {username: username, password: password})
           .then(response => {
-              this.set_token(response.data['token'])
+              this.set_token(response.data['token'], response.data['user'])
           }).catch(error => alert('Неверный логин или пароль'))
   }
 
@@ -117,7 +120,16 @@ class App extends React.Component {
     return (
         <div>
             <BrowserRouter>
-                <MenuList login={this.is_authenticated() ? <button onClick={() => this.logout()}>Logout</button> : <Link to='/login'>Login</Link>} />
+                {this.is_authenticated() ? (
+                    <MenuList
+                        login={<button onClick={() => this.logout()}>Logout</button>}
+                        username={<h4>{this.state.user} is logged in</h4>}
+                    />
+                ) : (
+                    <MenuList
+                        login={<Link to='/login'>Login</Link>}
+                    />
+                )}
                 <Routes>
                     <Route path='/' element={<UserList users={this.state.users} />} />
                     <Route path='/projects' element={<ProjectList projects={this.state.projects} />} />
