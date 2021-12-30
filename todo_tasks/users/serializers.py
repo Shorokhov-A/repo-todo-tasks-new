@@ -10,6 +10,12 @@ class UserModelSerializer(HyperlinkedModelSerializer):
         many=True,
         read_only=True,
     )
+    groups = HyperlinkedRelatedField(
+        view_name='group-detail',
+        lookup_field='groups',
+        many=True,
+        read_only=True,
+    )
 
     class Meta:
         model = User
