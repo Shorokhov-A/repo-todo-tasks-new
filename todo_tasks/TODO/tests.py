@@ -1,7 +1,8 @@
 from django.test import TestCase
 from rest_framework import status
-from rest_framework.test import APIRequestFactory
+from rest_framework.test import APIRequestFactory, APIClient
 
+from TODO.models import Project
 from TODO.views import ProjectModelViewSet
 
 
@@ -22,4 +23,13 @@ class TestProjectModelViewSet(TestCase):
         )
         view = ProjectModelViewSet.as_view({'post': 'create'})
         response = view(request)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_edit_guest(self):
+        project = Project.objects.create(name='Test project', link='https://test_project.com')
+        client = APIClient()
+        response = client.put(
+            f'/api/projects/{project.id}/',
+            {'name': 'Edited project', 'link': 'https://test_project_updated.com'},
+        )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
