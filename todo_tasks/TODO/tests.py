@@ -1,9 +1,10 @@
 from django.test import TestCase
 from rest_framework import status
-from rest_framework.test import APIRequestFactory, APIClient
+from rest_framework.test import APIRequestFactory, APIClient, APITestCase
 
-from TODO.models import Project
+from TODO.models import Project, ToDo
 from TODO.views import ProjectModelViewSet
+from users.models import User
 
 
 class TestProjectModelViewSet(TestCase):
@@ -33,3 +34,18 @@ class TestProjectModelViewSet(TestCase):
             {'name': 'Edited project', 'link': 'https://test_project_updated.com'},
         )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class TestToDoModelViewSet(APITestCase):
+    def test_edit_admin(self):
+        project = Project.objects.create(name='Test project', link='https://test_project.com')
+        test_user = User.objects.create_superuser('user_1', 'test@mail.ru', 'n8Hje4Gr5wHr')
+        to_do = ToDo.objects.create(text='Test todo text', project=project, user=test_user)
+        self.client.login(username='user_1', password='n8Hje4Gr5wHr')
+        response = self.client.put(
+            f'/api/todo/{to_do.id}/',
+            {'text': 'New test todo text', 'project': to_do.project.id, 'user': to_do.user.id},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        to_do = ToDo.objects.get(id=to_do.id)
+        self.assertEqual(to_do.text, 'New test todo text')
