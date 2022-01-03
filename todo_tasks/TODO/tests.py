@@ -1,4 +1,5 @@
 from django.test import TestCase
+from mixer.backend.django import mixer
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, APIClient, APITestCase
 
@@ -49,3 +50,15 @@ class TestToDoModelViewSet(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         to_do = ToDo.objects.get(id=to_do.id)
         self.assertEqual(to_do.text, 'New test todo text')
+
+    def test_edit_mixer(self):
+        User.objects.create_superuser('user_1', 'test@mail.ru', 'n8Hje4Gr5wHr')
+        to_do = mixer.blend(ToDo)
+        self.client.login(username='user_1', password='n8Hje4Gr5wHr')
+        response = self.client.put(
+            f'/api/todo/{to_do.id}/',
+            {'text': 'New test text', 'project': to_do.project.id, 'user': to_do.user.id},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        to_do = ToDo.objects.get(id=to_do.id)
+        self.assertEqual(to_do.text, 'New test text')
