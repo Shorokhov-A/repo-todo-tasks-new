@@ -1,7 +1,8 @@
 from django.test import TestCase
 from mixer.backend.django import mixer
+from requests.auth import HTTPBasicAuth
 from rest_framework import status
-from rest_framework.test import APIRequestFactory, APIClient, APITestCase
+from rest_framework.test import APIRequestFactory, APIClient, APITestCase, RequestsClient
 
 from TODO.models import Project, ToDo
 from TODO.views import ProjectModelViewSet
@@ -62,3 +63,16 @@ class TestToDoModelViewSet(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         to_do = ToDo.objects.get(id=to_do.id)
         self.assertEqual(to_do.text, 'New test text')
+
+    def test_create_project(self):
+        User.objects.create_superuser('user_3', 'test@mail.ru', 'Bts7Ge4jNr5x')
+        client = RequestsClient()
+        client.auth = HTTPBasicAuth('user_3', 'Bts7Ge4jNr5x')
+        response = client.post(
+            'http://testserver/api/projects/',
+            data={
+                'name': 'New test project',
+                'link': 'https://testproject.com/',
+            }
+        )
+        assert response.status_code == 201
