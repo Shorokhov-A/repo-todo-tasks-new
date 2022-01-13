@@ -23,6 +23,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from rest_framework import schemas
+from django.views.generic import TemplateView
+
 from users.views import UserCustomViewSet, UserObtainAuthToken
 from TODO.views import ProjectModelViewSet, ToDoModelViewSet
 
@@ -43,6 +46,12 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
+my_schema_view = schemas.get_schema_view(
+    title='todo_tasks',
+    version='1.0',
+    description='Documentation to out project',
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
@@ -55,4 +64,9 @@ urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('openapi/', my_schema_view, name='openapi-schema'),
+    path('swagger-ui/', TemplateView.as_view(
+        template_name='TODO/swagger-ui.html',
+        extra_context={'schema_url':'openapi-schema'}
+    ), name='swagger-ui'),
 ]
