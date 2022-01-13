@@ -4,7 +4,7 @@ from djangorestframework_camel_case.render import CamelCaseJSONRenderer, CamelCa
 from rest_framework.pagination import LimitOffsetPagination
 from TODO.models import Project, ToDo
 from TODO.filters import ProjectFilter, ToDoFilter
-from TODO.serializers import ProjectModelSerializer, ToDoModelSerializer
+from TODO.serializers import ProjectModelSerializer, ToDoModelSerializer, ToDoModelSerializerBase
 
 
 class ProjectLimitOffsetPagination(LimitOffsetPagination):
@@ -33,3 +33,8 @@ class ToDoModelViewSet(ModelViewSet):
     def perform_destroy(self, instance):
         instance.is_active = False
         instance.save()
+
+    def get_serializer_class(self):
+        if self.request.method in ['GET']:
+            return ToDoModelSerializer
+        return ToDoModelSerializerBase

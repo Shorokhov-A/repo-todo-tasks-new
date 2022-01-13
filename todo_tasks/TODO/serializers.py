@@ -11,6 +11,12 @@ class ProjectModelSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class ToDoModelSerializerBase(ModelSerializer):
+    class Meta:
+        model = ToDo
+        fields = '__all__'
+
+
 class ToDoModelSerializer(HyperlinkedModelSerializer):
     user = UserModelSerializer()
 
