@@ -12,7 +12,7 @@ const ProjectItem = ({item}) => {
 }
 
 const ProjectDetails = ({items}) => {
-    let { id } = useParams();
+    let {id} = useParams();
     let filtered_items = items.filter((item) => item.id == id)
     return (
         <table>

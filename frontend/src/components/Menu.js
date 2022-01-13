@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-const MenuList = () => {
+const MenuList = ({login, username}) => {
     return (
         <div>
             <nav>
@@ -15,8 +15,12 @@ const MenuList = () => {
                     <li>
                         <Link to='/todo'>TODO</Link>
                     </li>
+                    <li>
+                        {login}
+                    </li>
                 </ul>
             </nav>
+            {username}
         </div>
     )
 }
