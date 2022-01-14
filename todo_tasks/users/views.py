@@ -6,13 +6,18 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
 from users.models import User
-from users.serializers import UserModelSerializer
+from users.serializers import UserModelSerializer, UserModelSerializerV2
 
 
 class UserCustomViewSet(ListModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     renderer_classes = (CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer)
     queryset = User.objects.all()
     serializer_class = UserModelSerializer
+
+    def get_serializer_class(self):
+        if self.request.version == '2.0':
+            return UserModelSerializerV2
+        return UserModelSerializer
 
 
 class UserObtainAuthToken(ObtainAuthToken):
