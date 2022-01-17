@@ -18,9 +18,13 @@ class ProjectType(DjangoObjectType):
 
 class Query(graphene.ObjectType):
     all_tasks = graphene.List(ToDoType)
+    all_projects = graphene.List(ProjectType)
 
     def resolve_all_tasks(root, info):
         return ToDo.objects.all()
+
+    def resolve_all_projects(root, info):
+        return Project.objects.all()
 
 
 schema = graphene.Schema(query=Query)
