@@ -26,6 +26,8 @@ from drf_yasg import openapi
 from rest_framework import schemas
 from django.views.generic import TemplateView
 
+from graphene_django.views import GraphQLView
+
 from users.views import UserCustomViewSet, UserObtainAuthToken
 from TODO.views import ProjectModelViewSet, ToDoModelViewSet
 
@@ -73,4 +75,5 @@ urlpatterns = [
         template_name='TODO/redoc.html',
         extra_context={'schema_url':'openapi-schema'}
     ), name='redoc-ui'),
+    path('graphql/', GraphQLView.as_view(graphiql=True)),
 ]
