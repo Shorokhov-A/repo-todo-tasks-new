@@ -10,6 +10,12 @@ class ToDoType(DjangoObjectType):
         fields = '__all__'
 
 
+class ProjectType(DjangoObjectType):
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+
 class Query(graphene.ObjectType):
     all_tasks = graphene.List(ToDoType)
 
