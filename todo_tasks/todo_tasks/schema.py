@@ -27,6 +27,7 @@ class Query(graphene.ObjectType):
     all_projects = graphene.List(ProjectType)
     all_users = graphene.List(UserType)
     project_by_id = graphene.Field(ProjectType, id=graphene.Int(required=True))
+    projects_by_user_name = graphene.List(ProjectType, name=graphene.String(required=False))
 
     def resolve_all_tasks(root, info):
         return ToDo.objects.all()
@@ -42,6 +43,13 @@ class Query(graphene.ObjectType):
             return Project.objects.get(id=id)
         except Project.DoesNotExist:
             return None
+
+    def resolve_projects_by_user_name(root, info, name=None):
+        projects = Project.objects.all()
+        if name:
+            first_name, last_name = name.split()
+            projects = projects.filter(users__first_name=first_name, users__last_name=last_name)
+        return projects
 
 
 schema = graphene.Schema(query=Query)
