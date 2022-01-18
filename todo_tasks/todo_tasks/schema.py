@@ -19,7 +19,7 @@ class ProjectType(DjangoObjectType):
 class UserType(DjangoObjectType):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email')
 
 
 class Query(graphene.ObjectType):
@@ -28,6 +28,7 @@ class Query(graphene.ObjectType):
     all_users = graphene.List(UserType)
     project_by_id = graphene.Field(ProjectType, id=graphene.Int(required=True))
     projects_by_user_name = graphene.List(ProjectType, name=graphene.String(required=False))
+    projects_by_user_id = graphene.List(ProjectType, user_id=graphene.Int(required=False))
 
     def resolve_all_tasks(root, info):
         return ToDo.objects.all()
@@ -49,6 +50,12 @@ class Query(graphene.ObjectType):
         if name:
             first_name, last_name = name.split()
             projects = projects.filter(users__first_name=first_name, users__last_name=last_name)
+        return projects
+
+    def resolve_projects_by_user_id(root, info, user_id=None):
+        projects = Project.objects.all()
+        if user_id:
+            projects = projects.filter(users__id=user_id)
         return projects
 
 
