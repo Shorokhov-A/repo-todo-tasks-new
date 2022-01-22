@@ -13,6 +13,9 @@ const ProjectItem = ({project}) => {
             <td>
                 {project.users}
             </td>
+            <td>
+                <button type='button'>Delete</button>
+            </td>
         </tr>
     )
 }
@@ -29,6 +32,7 @@ const ProjectList = ({projects}) => {
             <th>
                 Users
             </th>
+            <th></th>
             {projects.map((project) => <ProjectItem project={project} />)}
         </table>
     )
