@@ -17,7 +17,7 @@ class ToDoModelSerializerBase(ModelSerializer):
         fields = '__all__'
 
 
-class ToDoModelSerializer(HyperlinkedModelSerializer):
+class ToDoModelSerializer(ModelSerializer):
     user = UserModelSerializer()
 
     class Meta:

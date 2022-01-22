@@ -124,6 +124,14 @@ class App extends React.Component {
           }).catch(error => console.log(error))
   }
 
+  delete_todo(id) {
+      const headers = this.get_headers()
+      axios.delete(`http://127.0.0.1:8000/api/todo/${id}`, {headers})
+          .then(response => {
+              this.setState({'todo': this.state.todo.filter((item)=>item.id !== id)})
+          }).catch(error => console.log(error))
+  }
+
   render() {
     return (
         <div>
@@ -141,7 +149,7 @@ class App extends React.Component {
                 <Routes>
                     <Route path='/' element={<UserList users={this.state.users} />} />
                     <Route path='/projects' element={<ProjectList projects={this.state.projects} delete_project={(id)=>this.delete_project(id)} />} />
-                    <Route path='/todo' element={<ToDoList notes={this.state.todo} />} />
+                    <Route path='/todo' element={<ToDoList notes={this.state.todo} delete_todo={(id)=>this.delete_todo(id)} />} />
                     <Route path='/project/:id' element={<ProjectDetails items={this.state.projects} />} />
                     <Route path='/login' element={<LoginForm get_token={(username, password) => this.get_token(username, password)} />} />
                     <Route path='*' element={<NotFound404 />} />
