@@ -11,6 +11,7 @@ import axios from "axios";
 import {BrowserRouter, Route, Routes, useLocation, Link} from "react-router-dom";
 import LoginForm from "./components/Auth.js";
 import Cookies from 'universal-cookie';
+import ProjectForm from "./components/ProjectForm";
 
 const NotFound404 = () => {
     let location = useLocation();
@@ -149,6 +150,7 @@ class App extends React.Component {
                 <Routes>
                     <Route path='/' element={<UserList users={this.state.users} />} />
                     <Route path='/projects' element={<ProjectList projects={this.state.projects} delete_project={(id)=>this.delete_project(id)} />} />
+                    <Route path='/projects/create' element={<ProjectForm />} />
                     <Route path='/todo' element={<ToDoList notes={this.state.todo} delete_todo={(id)=>this.delete_todo(id)} />} />
                     <Route path='/project/:id' element={<ProjectDetails items={this.state.projects} />} />
                     <Route path='/login' element={<LoginForm get_token={(username, password) => this.get_token(username, password)} />} />
