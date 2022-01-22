@@ -20,6 +20,9 @@ const ToDoItem = ({note}) => {
                 &nbsp;
                 {note.user.lastName}
             </td>
+            <td>
+                <button type='button'>Delete</button>
+            </td>
         </tr>
     )
 }
@@ -42,6 +45,7 @@ const ToDoList = ({notes}) => {
             <th>
                 User
             </th>
+            <th></th>
             {notes.map((note) => <ToDoItem note={note} />)}
         </table>
     )
