@@ -103,7 +103,7 @@ class App extends React.Component {
           const notes = response.data.results
           this.setState(
               {
-                'todo': notes
+                'todo': notes.filter((item)=>item.isActive)
               }
               )
         }).catch(error => {
