@@ -16,5 +16,5 @@ class ToDo(models.Model):
     text = models.TextField()
     created = models.DateTimeField(verbose_name='дата создания', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='дата обновления', auto_now=True)
-    user = models.ForeignKey(User, models.PROTECT)
+    user = models.ForeignKey(User, models.CASCADE)
     is_active = models.BooleanField(default=True)
