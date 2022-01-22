@@ -1,5 +1,4 @@
 import React from "react";
-import logo from './logo.svg';
 import './App.css';
 import UserList from "./components/User.js";
 import MenuList from "./components/Menu.js";
@@ -8,7 +7,7 @@ import ProjectList from "./components/Projects.js";
 import ToDoList from "./components/ToDo.js";
 import ProjectDetails from "./components/ProjectInfo.js";
 import axios from "axios";
-import {BrowserRouter, Route, Routes, useLocation, Link} from "react-router-dom";
+import {BrowserRouter, Link, Route, Routes, useLocation} from "react-router-dom";
 import LoginForm from "./components/Auth.js";
 import Cookies from 'universal-cookie';
 import ProjectForm from "./components/ProjectForm";
@@ -133,6 +132,18 @@ class App extends React.Component {
           }).catch(error => console.log(error))
   }
 
+  create_project(name, link, users) {
+      // console.log(name, link, users)
+      const headers = this.get_headers()
+      const data = {'name': name, 'link': link, 'users': users}
+      axios.post('http://127.0.0.1:8000/api/projects/', data, {headers})
+          .then(response => {
+              let new_project = response.data
+              console.log(new_project)
+              this.setState({'projects': [...this.state.projects, new_project]})
+          }).catch(error => console.log(error))
+  }
+
   render() {
     return (
         <div>
@@ -149,10 +160,10 @@ class App extends React.Component {
                 )}
                 <Routes>
                     <Route path='/' element={<UserList users={this.state.users} />} />
-                    <Route path='/projects' element={<ProjectList projects={this.state.projects} delete_project={(id)=>this.delete_project(id)} />} />
-                    <Route path='/projects/create' element={<ProjectForm />} />
+                    <Route path='/projects' element={<ProjectList users={this.state.users} projects={this.state.projects} delete_project={(id)=>this.delete_project(id)} />} />
+                    <Route path='/projects/create' element={<ProjectForm users={this.state.users} create_project={(name, link, users)=>this.create_project(name, link, users)} />} />
                     <Route path='/todo' element={<ToDoList notes={this.state.todo} delete_todo={(id)=>this.delete_todo(id)} />} />
-                    <Route path='/project/:id' element={<ProjectDetails items={this.state.projects} />} />
+                    <Route path='/project/:id' element={<ProjectDetails users={this.state.users} items={this.state.projects} />} />
                     <Route path='/login' element={<LoginForm get_token={(username, password) => this.get_token(username, password)} />} />
                     <Route path='*' element={<NotFound404 />} />
                 </Routes>

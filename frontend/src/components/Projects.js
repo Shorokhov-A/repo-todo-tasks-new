@@ -1,7 +1,12 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-const ProjectItem = ({project, delete_project}) => {
+function getUserName(users, id) {
+    let user = users.find((user)=>user.id === id)
+    return `${user.firstName} ${user.lastName}`
+}
+
+const ProjectItem = ({project, delete_project, users}) => {
     return (
         <tr>
             <td>
@@ -11,7 +16,7 @@ const ProjectItem = ({project, delete_project}) => {
                 {project.link}
             </td>
             <td>
-                {project.users}
+                {project.users.map((item)=><p>{getUserName(users, item)}</p>)}
             </td>
             <td>
                 <button onClick={()=>delete_project(project.id)} type='button'>Delete</button>
@@ -20,7 +25,7 @@ const ProjectItem = ({project, delete_project}) => {
     )
 }
 
-const ProjectList = ({projects, delete_project}) => {
+const ProjectList = ({projects, delete_project, users}) => {
     return (
         <div>
         <table>
@@ -34,7 +39,7 @@ const ProjectList = ({projects, delete_project}) => {
                 Users
             </th>
             <th></th>
-            {projects.map((project) => <ProjectItem project={project} delete_project={delete_project} />)}
+            {projects.map((project) => <ProjectItem project={project} delete_project={delete_project} users={users} />)}
         </table>
         <Link to={'/projects/create'}>Create</Link>
         </div>
