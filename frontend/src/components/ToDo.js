@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 const ToDoItem = ({note, delete_todo}) => {
     return (
@@ -47,6 +48,7 @@ const ToDoList = ({notes, delete_todo}) => {
             </th>
             <th></th>
             {notes.map((note) => <ToDoItem note={note} delete_todo={delete_todo} />)}
+            <Link to={'/todo/create'}>Create</Link>
         </table>
     )
 }
