@@ -12,6 +12,7 @@ import LoginForm from "./components/Auth.js";
 import Cookies from 'universal-cookie';
 import ProjectForm from "./components/ProjectForm";
 import ToDoForm from "./components/ToDoForm";
+import ProjectSearchForm from "./components/ProjectSearchForm";
 
 const NotFound404 = () => {
     let location = useLocation();
@@ -32,6 +33,7 @@ class App extends React.Component {
         'token': '',
         'user_name': '',
         'user_id': '',
+        'projects_filtered': '',
     }
   }
 
@@ -158,6 +160,14 @@ class App extends React.Component {
           }).catch(error => console.log(error))
   }
 
+  filter_projects(text) {
+      console.log(text)
+      this.setState({'projects_filtered': ''})
+      if(text) {
+          this.setState({'projects_filtered': this.state.projects.filter((item)=>item.name.includes(`${text}`))})
+      }
+  }
+
   render() {
     return (
         <div>
@@ -174,7 +184,16 @@ class App extends React.Component {
                 )}
                 <Routes>
                     <Route path='/' element={<UserList users={this.state.users} />} />
-                    <Route path='/projects' element={<ProjectList users={this.state.users} projects={this.state.projects} delete_project={(id)=>this.delete_project(id)} />} />
+                    <Route
+                        path='/projects'
+                        element={<ProjectList
+                            users={this.state.users}
+                            // projects={this.state.projects}
+                            projects={this.state.projects_filtered ? (this.state.projects_filtered) : (this.state.projects)}
+                            delete_project={(id)=>this.delete_project(id)}
+                            search_form={<ProjectSearchForm filter_projects={(text)=> this.filter_projects(text)} />}
+                        />}
+                    />
                     <Route path='/projects/create' element={<ProjectForm users={this.state.users} create_project={(name, link, users)=>this.create_project(name, link, users)} />} />
                     <Route path='/todo' element={<ToDoList notes={this.state.todo} delete_todo={(id)=>this.delete_todo(id)} />} />
                     <Route path='/todo/create' element={<ToDoForm projects={this.state.projects} create_todo={(text, project)=>this.create_todo(text, project)} />} />

@@ -25,9 +25,10 @@ const ProjectItem = ({project, delete_project, users}) => {
     )
 }
 
-const ProjectList = ({projects, delete_project, users}) => {
+const ProjectList = ({projects, delete_project, users, search_form}) => {
     return (
         <div>
+            {search_form}
         <table>
             <th>
                 Name
