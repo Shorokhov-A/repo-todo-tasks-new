@@ -39,29 +39,26 @@ class ProjectForm extends React.Component {
     render() {
         return(
             <form onSubmit={(event)=> this.handleSubmit(event)}>
-                <div className="form-group">
+                <div>
                     <label for="name">name</label>
-                    <input type="text" className="form-control" name="name"
+                    <input type="text" name="name"
                            value={this.state.name}
                            onChange={(event) => this.handleChange(event)}/>
                 </div>
-                <div className="form-group">
+                <div>
                     <label for="link">link</label>
-                    <input type="text" className="form-control" name="link"
+                    <input type="text" name="link"
                            value={this.state.link}
                            onChange={(event)=>this.handleChange(event)}/>
                 </div>
-                <div className="form-group">
+                <div>
                     <label for="users">users</label>
-                    {/*<input type="number" className="form-control" name="users"*/}
-                    {/*       value={this.state.users}*/}
-                    {/*       onChange={(event) => this.handleChange(event)}/>*/}
-                    <select multiple name="users" className='form-control'
+                    <select multiple name="users"
                             onChange={(event)=>this.handleUsersChange(event)}>
                         {this.props.users.map((user)=><option value={user.id}>{user.firstName} {user.lastName}</option>)}
                     </select>
                 </div>
-                <input type="submit" className="btn btn-primary" value="Save"/>
+                <input type="submit" value="Save"/>
             </form>
         )
     }
