@@ -11,10 +11,10 @@ services:
         POSTGRES_PASSWORD: andy12345
         POSTGRES_DB: todo_tasks
   backend:
-    build:
-      context: .
-    ports:
-      - 8080:8000
+    build: ./todo_tasks
+    privileged: true
+    expose:
+      - 8080
     environment:
       DJANGO_SETTINGS_MODULE: 'todo_tasks.settings.dev'
     command: bash -c "
@@ -24,7 +24,14 @@ services:
      && python manage.py createusers
      && python manage.py addprojects
      && python manage.py addnotes
-     && python manage.py runserver 0.0.0.0:8000
+     && gunicorn todo_tasks.wsgi -b 0.0.0.0:8080
      "
     depends_on:
       - db
+  nginx:
+    build: ./nginx
+    privileged: true
+    ports:
+      - 8000:80
+    depends_on:
+      - backend
