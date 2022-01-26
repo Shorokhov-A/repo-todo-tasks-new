@@ -10,10 +10,21 @@ services:
         POSTGRES_USER: andy
         POSTGRES_PASSWORD: andy12345
         POSTGRES_DB: todo_tasks
-  adminer:
-    image: adminer:4.7.8-standalone
-    restart: always
+  backend:
+    build:
+      context: .
     ports:
-      - 8080:8080
+      - 8080:8000
+    environment:
+      DJANGO_SETTINGS_MODULE: 'todo_tasks.settings.dev'
+    command: bash -c "
+     ./wait-for-postgres.sh db
+     && python manage.py migrate
+     && python manage.py makemigrations
+     && python manage.py createusers
+     && python manage.py addprojects
+     && python manage.py addnotes
+     && python manage.py runserver 0.0.0.0:8000
+     "
     depends_on:
       - db
