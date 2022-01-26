@@ -16,7 +16,7 @@ services:
     expose:
       - 8080
     environment:
-      DJANGO_SETTINGS_MODULE: 'todo_tasks.settings.dev'
+      DJANGO_SETTINGS_MODULE: 'todo_tasks.settings.prod'
     command: bash -c "
      ./wait-for-postgres.sh db
      && python manage.py migrate
