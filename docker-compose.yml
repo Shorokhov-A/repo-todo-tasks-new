@@ -19,8 +19,8 @@ services:
       DJANGO_SETTINGS_MODULE: 'todo_tasks.settings.prod'
     command: bash -c "
      ./wait-for-postgres.sh db
-     && python manage.py migrate
      && python manage.py makemigrations
+     && python manage.py migrate
      && python manage.py createusers
      && python manage.py addprojects
      && python manage.py addnotes
