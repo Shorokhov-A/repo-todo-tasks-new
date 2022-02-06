@@ -4,7 +4,7 @@ from users.serializers import UserModelSerializer
 
 
 class ProjectModelSerializer(ModelSerializer):
-    users = StringRelatedField(many=True)
+    users = StringRelatedField(many=True).to_internal_value
 
     class Meta:
         model = Project
@@ -17,7 +17,7 @@ class ToDoModelSerializerBase(ModelSerializer):
         fields = '__all__'
 
 
-class ToDoModelSerializer(HyperlinkedModelSerializer):
+class ToDoModelSerializer(ModelSerializer):
     user = UserModelSerializer()
 
     class Meta:
