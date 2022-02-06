@@ -1,0 +1,44 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:13.5
+    privileged: true
+    ports:
+      - 54325:5432
+    environment:
+        POSTGRES_USER: andy
+        POSTGRES_PASSWORD: andy12345
+        POSTGRES_DB: todo_tasks
+  backend:
+    build: ./todo_tasks
+    privileged: true
+    expose:
+      - 8080
+    environment:
+      DJANGO_SETTINGS_MODULE: 'todo_tasks.settings.prod'
+    command: bash -c "
+     ./wait-for-postgres.sh db
+     && python manage.py makemigrations
+     && python manage.py migrate
+     && python manage.py createusers
+     && python manage.py addprojects
+     && python manage.py addnotes
+     && gunicorn todo_tasks.wsgi -b 0.0.0.0:8080
+     "
+    depends_on:
+      - db
+  nginx:
+    build: ./nginx
+    privileged: true
+    ports:
+      - 8000:80
+    depends_on:
+      - backend
+  frontend:
+    build: ./frontend
+    privileged: true
+    ports:
+      - 80:80
+    depends_on:
+      - backend
